@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuanwj.demo.mapper.PhoneImeiMapper">
+  <resultMap id="BaseResultMap" type="com.yuanwj.demo.model.PhoneImei">
+    <id column="imei_id" jdbcType="BIGINT" property="imeiId" />
+    <result column="tenant_id" jdbcType="BIGINT" property="tenantId" />
+    <result column="imei_num" jdbcType="VARCHAR" property="imeiNum" />
+    <result column="record_user_id" jdbcType="BIGINT" property="recordUserId" />
+    <result column="record_date" jdbcType="TIMESTAMP" property="recordDate" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from wms_phone_imei
+    where imei_id = #{imeiId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yuanwj.demo.model.PhoneImei">
+    <selectKey keyProperty="imeiId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into wms_phone_imei (tenant_id, imei_num, record_user_id, 
+      record_date)
+    values (#{tenantId,jdbcType=BIGINT}, #{imeiNum,jdbcType=VARCHAR}, #{recordUserId,jdbcType=BIGINT}, 
+      #{recordDate,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.yuanwj.demo.model.PhoneImei">
+    update wms_phone_imei
+    set tenant_id = #{tenantId,jdbcType=BIGINT},
+      imei_num = #{imeiNum,jdbcType=VARCHAR},
+      record_user_id = #{recordUserId,jdbcType=BIGINT},
+      record_date = #{recordDate,jdbcType=TIMESTAMP}
+    where imei_id = #{imeiId,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select imei_id, tenant_id, imei_num, record_user_id, record_date
+    from wms_phone_imei
+    where imei_id = #{imeiId,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select imei_id, tenant_id, imei_num, record_user_id, record_date
+    from wms_phone_imei
+  </select>
+</mapper>
